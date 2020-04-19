@@ -1,4 +1,4 @@
-# Notes App d
+# Notes App
 
 ## Project setup
 ```
