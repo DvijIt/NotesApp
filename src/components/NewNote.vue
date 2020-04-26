@@ -10,27 +10,38 @@
         <input type="radio" name="priority" :value="item" v-model="note.priority" />
       </div>
     </div>
-    <button class="btn btnPrimary" @click="addNote">New note</button>
+    <button class="btn btnPrimary" @click="add">New note</button>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
 export default {
-  props: {
-    note: {
-      type: Object,
-      required: true
-    },
-    priority: {
-      type: Array,
-      required: true
-    }
-  },
   methods: {
-    addNote() {
-      this.$emit("addNote", this.note);
+    ...mapMutations(["addNote", "getMessage"]),
+    add() {
+      let { title, descr, priority, editing } = this.note;
+      if (title === "") {
+        this.getMessage("Title can`t be blank!");
+        return false;
+      }
+      this.addNote({
+        title,
+        descr,
+        date: new Date(Date.now()).toLocaleString(),
+        priority,
+        editing
+      });
+
+      this.note.title = "";
+      this.note.descr = "";
+      this.note.priority = "normal";
+      this.getMessage(null);
     }
   },
+  computed: {
+    ...mapGetters(['note', 'priority'])
+  }
 };
 </script>
 

@@ -1,16 +1,14 @@
-<template>
+<template v-if=message>
   <div class="message">
-    <p>{{ message }}</p>
+    <p>{{ getMessage }}</p>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
-  props: {
-    message: {
-      type: String,
-      default: "default message"
-    }
+  computed: {
+    ...mapGetters(["getMessage"]),
   }
 };
 </script>

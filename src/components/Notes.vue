@@ -2,23 +2,23 @@
   <div class="notes">
     <div
       class="note"
-      :class="[{ full: !grid, }, note.priority]"
-      v-for="(note, index) in notes"
+      :class="[{ full: !getGrid, }, note.priority]"
+      v-for="(note, index) in getNotesFilter"
       :key="index"
     >
-      <div class="note-header" :class="{ full: !grid }">
+      <div class="note-header" :class="{ full: !getGrid }">
         <input
           type="text"
           class="hiddenInput"
           @keyup.enter="edit(index)"
-          @keyup.esc="stop(index)"
+          @keyup.esc="note.editing.editTitle = false"
           v-show="note.editing.editTitle"
           v-model="note.editing.title"
         />
         <p
           class="textTitle"
           v-show="!note.editing.editTitle"
-          @click="showInput(index)"
+          @click="showField(index)"
         >{{ note.title }}</p>
         <p class="btnRemove" @click="remove(index)">x</p>
       </div>
@@ -34,7 +34,7 @@
         <p
           class="textDescr"
           v-show="!note.editing.editDescr"
-          @click="showInput(index)"
+          @click="showField(index)"
         >{{ note.descr }}</p>
         <span>{{ note.date }}</span>
       </div>
@@ -43,44 +43,25 @@
 </template>
 
 <script>
+import { mapMutations, mapGetters } from "vuex";
 export default {
-  props: {
-    notes: {
-      type: Array,
-      required: true
-    },
-    grid: {
-      type: Boolean,
-      required: true
-    }
-  },
-  data() {
-    return {};
+  computed: {
+    ...mapGetters(["getNotesFilter", 'getGrid'])
   },
   methods: {
+    ...mapMutations(["removeNote", "showEditField", "editNote"]),
     remove(index) {
-      this.$emit("remove", index);
+      this.removeNote(index);
     },
-    showInput(index) {
-      
-      if (event.target.classList.contains("textTitle")) {
-        this.notes[index].editing.title = this.notes[index].title;
-        this.notes[index].editing.editTitle = true;
-      } else {
-        this.notes[index].editing.descr = this.notes[index].descr;
-        this.notes[index].editing.editDescr = true;
-      }
-      event.target.previousElementSibling.focus()
+    showField(index) {
+      this.showEditField(index);
     },
     edit(index) {
-      this.$emit("editing", {
+      this.editNote({
         index,
-        title: this.notes[index].editing.title,
-        descr: this.notes[index].editing.descr
+        title: this.getNotesFilter[index].editing.title,
+        descr: this.getNotesFilter[index].editing.descr
       });
-    },
-    stop(index) {
-      this.notes[index].editing.editTitle = false;
     }
   }
 };
