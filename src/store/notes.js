@@ -39,7 +39,11 @@ export default {
     ],
     search: '',
   },
-  actions: {},
+  actions: {
+    addNote({commit}, newNote) {
+      commit('addNote', newNote)
+    }
+  },
   mutations: {
     removeNote(state, index) {
       state.notes.splice(index, 1);
@@ -47,7 +51,6 @@ export default {
     addNote(state, newNote) {
       state.notes.push(newNote);
     },
-
     showEditField(state, index) {
       if (event.target.classList.contains("textTitle")) {
         state.notes[index].editing.title = state.notes[index].title;

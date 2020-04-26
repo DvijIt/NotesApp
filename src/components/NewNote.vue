@@ -15,10 +15,11 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   methods: {
-    ...mapMutations(["addNote", "getMessage"]),
+    ...mapActions(["addNote"]),
+    ...mapMutations(["getMessage"]),
     add() {
       let { title, descr, priority, editing } = this.note;
       if (title === "") {
