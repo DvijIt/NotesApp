@@ -42,7 +42,14 @@ export default {
   actions: {
     addNote({commit}, newNote) {
       commit('addNote', newNote)
-    }
+    },
+    editNote({commit}, dataNote) {
+      commit('editNote', dataNote)
+    },
+    removeNote({commit}, index) {
+      state.notes.splice(index, 1);
+      commit('removeNote', index)
+    },
   },
   mutations: {
     removeNote(state, index) {
@@ -61,7 +68,6 @@ export default {
       }
     },
     editNote(state, dataNote) {
-      console.log(dataNote);
       let {index, title, descr } = dataNote
       if (title !== "") {
         state.notes[index].title = title;

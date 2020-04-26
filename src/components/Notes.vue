@@ -43,13 +43,14 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
+import { mapMutations, mapGetters, mapActions } from "vuex";
 export default {
   computed: {
     ...mapGetters(["getNotesFilter", 'getGrid'])
   },
   methods: {
-    ...mapMutations(["removeNote", "showEditField", "editNote"]),
+    ...mapMutations(["showEditField"]),
+    ...mapMutations(["removeNote", "editNote"]),
     remove(index) {
       this.removeNote(index);
     },
